@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 750118749}
   - component: {fileID: 750118748}
   m_Layer: 5
-  m_Name: NummberedBackground
+  m_Name: NumberBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,7 +448,7 @@ RectTransform:
   m_GameObject: {fileID: 750118746}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.09020084, y: 0.0797814, z: 0.0797814}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1320380288}
@@ -457,8 +457,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 634.7815, y: 396.07208}
-  m_SizeDelta: {x: 6294.711, y: 3071.582}
+  m_AnchoredPosition: {x: -115.5108, y: -62.8125}
+  m_SizeDelta: {x: 240, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &750118748
 MonoBehaviour:
@@ -480,8 +480,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300090, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300036, guid: 1eaee135ce037439d925cee5e41ce026, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -683,8 +683,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3183, y: -33.004}
-  m_SizeDelta: {x: 2841.137, y: 3005.572}
+  m_AnchoredPosition: {x: -74.5788, y: -0.97872}
+  m_SizeDelta: {x: 104.7574, y: 104.76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &977808574
 MonoBehaviour:
@@ -1008,8 +1008,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 514.52, y: -7.469}
-  m_SizeDelta: {x: 4553.942, y: 2353.589}
+  m_AnchoredPosition: {x: 43.3, y: -7.3}
+  m_SizeDelta: {x: 135.9227, y: 88.2818}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1320380289
 MonoBehaviour:
@@ -1024,8 +1024,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1033,11 +1033,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: b9aee8ab1ba27b649bb0abb83def12ca, type: 3}
-    m_FontSize: 300
+    m_FontSize: 50
     m_FontStyle: 1
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 300
+    m_MaxSize: 112
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1332,6 +1332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3f096cbed0c13842a27ca229fc4a746, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rolledNumberText: {fileID: 0}
 --- !u!1 &1472914368 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8611441520705628849, guid: 0520e268e72d34844b52ad3a8b2473ff, type: 3}
@@ -1624,7 +1625,7 @@ SceneRoots:
   - {fileID: 1174213281}
   - {fileID: 286151924}
   - {fileID: 1503568273}
-  - {fileID: 8035250}
   - {fileID: 1436834400}
   - {fileID: 1343320260}
   - {fileID: 105384475}
+  - {fileID: 8035250}

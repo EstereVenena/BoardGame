@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class DiceRollScript : MonoBehaviour
@@ -10,21 +9,21 @@ public class DiceRollScript : MonoBehaviour
     public string diceFaceNum;
     public bool isLanded = false;
     public bool firstThrow = false;
+
+
     void Awake()
     {
         startPosition = transform.position;
         Initialize();
-
-
     }
-
 
     private void Initialize()
     {
         rBody = GetComponent<Rigidbody>();
         rBody.isKinematic = true;
         position = transform.position;
-        transform.rotation = new Quaternion(Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360), 0);
+        transform.rotation = new Quaternion(
+            Random.Range(0, 360), Random.Range(0, 360), Random.Range(0, 360), 0);
     }
 
     private void RollDice()
@@ -37,31 +36,36 @@ public class DiceRollScript : MonoBehaviour
         rBody.AddTorque(forceX, forceY, forceZ);
     }
 
-    private void ResetDice()
+    public void ResetDice()
     {
         transform.position = startPosition;
         firstThrow = false;
         isLanded = false;
         Initialize();
     }
-    private void Update()
+
+
+    void Update()
     {
-        if (rBody != null) {
+        if (rBody != null)
+        {
             if (Input.GetMouseButtonDown(0) && isLanded ||
-                Input.GetMouseButtonDown(0) && !firstThrow) {
+                Input.GetMouseButtonDown(0) && !firstThrow)
+            {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
                 if (Physics.Raycast(ray, out hit))
                 {
-                    if(hit.collider !=null && hit.collider.gameObject == this.gameObject)
+                    if (hit.collider != null && hit.collider.gameObject == this.gameObject)
                     {
-                        if(!firstThrow)
+                        if (!firstThrow)
                         {
                             firstThrow = true;
                         }
                         RollDice();
                     }
+
                 }
             }
         }
