@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FallingAngel1IdleSprite
+  m_Name: FallenAngel1IdleSprite
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -22,37 +22,39 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: 21300000, guid: 1d115a6e23e99d743ad629e1e1fbf2ee, type: 3}
-    - time: 0.06666667
-      value: {fileID: 21300000, guid: ba1c34899bb91a141bd8964962d10996, type: 3}
+    - time: 0.05
+      value: {fileID: 21300000, guid: 1d115a6e23e99d743ad629e1e1fbf2ee, type: 3}
     - time: 0.11666667
+      value: {fileID: 21300000, guid: ba1c34899bb91a141bd8964962d10996, type: 3}
+    - time: 0.16666667
       value: {fileID: 21300000, guid: c3bf09514f6871144ada53cd295e7e1a, type: 3}
-    - time: 0.18333334
+    - time: 0.21666667
       value: {fileID: 21300000, guid: e43f23da2e8a1214fbd84fef5fbb791c, type: 3}
-    - time: 0.23333333
+    - time: 0.28333333
       value: {fileID: 21300000, guid: 682ea0d93bc8b744888abf125e771854, type: 3}
-    - time: 0.3
+    - time: 0.33333334
       value: {fileID: 21300000, guid: 766fac9fc8c69a549acffb2efcf225eb, type: 3}
-    - time: 0.35
+    - time: 0.38333333
       value: {fileID: 21300000, guid: c7dfc31d7249476429bc7a89054178a8, type: 3}
-    - time: 0.41666666
+    - time: 0.45
       value: {fileID: 21300000, guid: c9e164a5db490104fb8bb56524787f86, type: 3}
-    - time: 0.46666667
+    - time: 0.5
       value: {fileID: 21300000, guid: fc4ad5e012c463541b84cdf114b472c2, type: 3}
-    - time: 0.53333336
+    - time: 0.55
       value: {fileID: 21300000, guid: 135bd491333e4db4e9b0e55edba79336, type: 3}
-    - time: 0.5833333
+    - time: 0.6166667
       value: {fileID: 21300000, guid: 846a3b60d3f92dc4e9396210592901e8, type: 3}
-    - time: 0.65
+    - time: 0.6666667
       value: {fileID: 21300000, guid: bde05ea459a848e4db3f2a71ada4b00d, type: 3}
-    - time: 0.7
+    - time: 0.71666664
       value: {fileID: 21300000, guid: cbbec17928caa1844b6bb624962217bc, type: 3}
-    - time: 0.76666665
+    - time: 0.78333336
       value: {fileID: 21300000, guid: 1118792ea8af4f944bd396537b2ac3d8, type: 3}
-    - time: 0.81666666
+    - time: 0.8333333
       value: {fileID: 21300000, guid: 4f32b8c435e3bd9478a108a0e4badf7e, type: 3}
     - time: 0.8833333
       value: {fileID: 21300000, guid: f6f9ca196c28c424ba950c3218fd17f2, type: 3}
-    - time: 0.93333334
+    - time: 0.95
       value: {fileID: 21300000, guid: f7c23cafe38014e45a340cdd9691b428, type: 3}
     - time: 1
       value: {fileID: 21300000, guid: d911a992f053ac64a80afdf3c508bbfa, type: 3}
@@ -78,6 +80,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
+    - {fileID: 21300000, guid: 1d115a6e23e99d743ad629e1e1fbf2ee, type: 3}
     - {fileID: 21300000, guid: 1d115a6e23e99d743ad629e1e1fbf2ee, type: 3}
     - {fileID: 21300000, guid: ba1c34899bb91a141bd8964962d10996, type: 3}
     - {fileID: 21300000, guid: c3bf09514f6871144ada53cd295e7e1a, type: 3}

@@ -6,7 +6,7 @@ public class DiceAnimatorScript : MonoBehaviour
 
     void Start()
     {
-         animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     public void RollDice()

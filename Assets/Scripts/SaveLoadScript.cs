@@ -7,7 +7,8 @@ public class SaveLoadScript : MonoBehaviour
     public string saveFileName = "mansFails.json";
 
     [Serializable]
-    public class GameData {
+    public class GameData
+    {
         public int character;
         public String characterName;
         // Add other game state fields here
@@ -29,13 +30,13 @@ public class SaveLoadScript : MonoBehaviour
     {
         string filePath = Application.persistentDataPath + "/" + saveFileName;
 
-        if(File.Exists(filePath))
+        if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
             gameData = JsonUtility.FromJson<GameData>(json);
 
             // Use gameData to restore game state
-            
+
         }
         else
         {

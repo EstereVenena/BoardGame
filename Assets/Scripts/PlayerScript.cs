@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.IO; 
+using System.IO;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -23,7 +23,7 @@ public class PlayerScript : MonoBehaviour
         otherPlayers = new int[PlayerPrefs.GetInt("PlayerCount")];
         string[] nameArray = ReadLinesFromFile(textFileName);
 
-        for(int i=0; i<otherPlayers.Length-1; i++)
+        for (int i = 0; i < otherPlayers.Length - 1; i++)
         {
             spawnPoint.transform.position += new Vector3(0.2f, 0, 0.08f);
             index = Random.Range(0, playerPrefabs.Length);
@@ -37,10 +37,10 @@ public class PlayerScript : MonoBehaviour
     string[] ReadLinesFromFile(string fileName)
     {
         TextAsset textAsset = Resources.Load<TextAsset>(fileName);
-        
+
         if (textAsset != null)
         {
-            return textAsset.text.Split(new[] { '\r', '\n' }, 
+            return textAsset.text.Split(new[] { '\r', '\n' },
                 System.StringSplitOptions.RemoveEmptyEntries);
         }
         else

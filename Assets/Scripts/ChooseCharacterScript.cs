@@ -26,7 +26,7 @@ public class ChooseCharacterScript : MonoBehaviour
         characters[characterIndex].SetActive(false);
         characterIndex++;
 
-        if(characterIndex == characters.Length)
+        if (characterIndex == characters.Length)
         {
             characterIndex = 0;
         }

@@ -11,19 +11,17 @@ public class SideDetectScript : MonoBehaviour
 
     private void OnTriggerStay(Collider sideCollider)
     {
-        if(diceRollScript != null)
+        if (diceRollScript != null)
         {
-            if(diceRollScript.GetComponent<Rigidbody>().linearVelocity == Vector3.zero)
+            if (diceRollScript.GetComponent<Rigidbody>().linearVelocity == Vector3.zero)
             {
                 diceRollScript.isLanded = true;
                 diceRollScript.diceFaceNum = sideCollider.name;
 
             }
             else
-            {
-                diceRollScript.isLanded = false;
-            }
-        }
 
+                diceRollScript.isLanded = false;
+        }
     }
 }
