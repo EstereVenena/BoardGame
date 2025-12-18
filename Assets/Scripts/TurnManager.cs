@@ -2,48 +2,90 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public GameObject[] players;   // visi player objekti uz board
-    public DiceRollScript dice;    // tavs esošais dice
-    public int currentPlayerIndex = 0;
+    [Header("Players")]
+    public GameObject[] players;
 
-    public bool isTurnActive = true;
+    [Header("Board")]
+    public Transform boardTilesRoot;
+
+    [Header("Dice")]
+    public DiceRollScript dice;
+
+    public int currentPlayerIndex = 0;
+    bool isInitialized = false;
 
     void Start()
     {
-        SetActivePlayer(0);
+        Invoke(nameof(InitPlayers), 0.2f);
+    }
+
+    void InitPlayers()
+    {
+        if (players == null || players.Length == 0)
+            players = GameObject.FindGameObjectsWithTag("Player");
+
+        if (players == null || players.Length == 0)
+        {
+            Debug.LogError("TurnManager: No players found.");
+            return;
+        }
+
+        if (boardTilesRoot == null)
+        {
+            var obj = GameObject.Find("BoardTiles");
+            if (obj != null)
+                boardTilesRoot = obj.transform;
+            else
+            {
+                Debug.LogError("TurnManager: BoardTiles not found in scene!");
+                return;
+            }
+        }
+
+        // ✅ PIEŠĶIRAM TILE ROOT + INIT
+        foreach (var p in players)
+        {
+            if (p == null) continue;
+
+            var mover = p.GetComponent<PlayerMoverBoard>();
+            if (mover != null)
+            {
+                mover.tilesRoot = boardTilesRoot;
+                mover.InitTiles();
+            }
+        }
+
+        isInitialized = true;
+        currentPlayerIndex = 0;
+
+        Debug.Log("TurnManager initialized. Players found: " + players.Length);
     }
 
     public void DiceRolled()
     {
-        if (!isTurnActive) return;
+        Debug.Log("DiceRolled CALLED");
+        
 
-        isTurnActive = false;
 
-        int steps = int.Parse(dice.diceFaceNum);
+        if (!isInitialized) return;
 
-        // Te vēlāk pieslēgsim kustību
-        Debug.Log("Player " + currentPlayerIndex + " rolled " + steps);
+        if (!int.TryParse(dice.diceFaceNum, out int steps))
+            return;
 
-        Invoke(nameof(NextTurn), 1.0f); // simulē gājiena beigas
+        var anim = players[currentPlayerIndex].GetComponent<Animator>();
+        if (anim) anim.SetTrigger("special");
+
+        var mover = players[currentPlayerIndex].GetComponent<PlayerMoverBoard>();
+        if (mover == null) return;
+
+        mover.DoTurn(steps, OnPlayerFinishedMove);
+        Debug.Log("STEPS = " + steps);
     }
 
-    void NextTurn()
+    void OnPlayerFinishedMove()
     {
         currentPlayerIndex++;
         if (currentPlayerIndex >= players.Length)
             currentPlayerIndex = 0;
-
-        SetActivePlayer(currentPlayerIndex);
-        isTurnActive = true;
-    }
-
-    void SetActivePlayer(int index)
-    {
-        for (int i = 0; i < players.Length; i++)
-        {
-            players[i].SetActive(i == index);
-        }
-
-        Debug.Log("Now playing: Player " + index);
     }
 }

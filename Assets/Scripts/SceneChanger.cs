@@ -7,7 +7,6 @@ public class SceneChanger : MonoBehaviour
     public SaveLoadScript saveLoadScript;
     public FadeScript fadeScript;
 
-
     public void CloseGame()
     {
         StartCoroutine(Delay("quit", -1, ""));
@@ -20,22 +19,13 @@ public class SceneChanger : MonoBehaviour
             yield return fadeScript.FadeOut(0.1f);
             PlayerPrefs.DeleteAll();
 
-            if (UnityEditor.EditorApplication.isPlaying)
-            {
-                UnityEditor.EditorApplication.isPlaying = false;
-            }
-            else
-            {
-                Application.Quit();
-            }
-
+            Application.Quit(); // ✅ PAREIZI RUNTIME
         }
         else if (string.Equals(command, "play", System.StringComparison.OrdinalIgnoreCase))
         {
             yield return fadeScript.FadeOut(0.1f);
             saveLoadScript.SaveGame(characterIndex, characterName);
             SceneManager.LoadScene(1, LoadSceneMode.Single);
-
         }
         else if (string.Equals(command, "menu", System.StringComparison.OrdinalIgnoreCase))
         {

@@ -188,8 +188,9 @@ GameObject:
   - component: {fileID: 1985963837951980560}
   - component: {fileID: 293435824139131425}
   - component: {fileID: 2970985205552511182}
+  - component: {fileID: -2448075002290200160}
   m_Layer: 0
-  m_Name: EvilManPlayer 5
+  m_Name: EvilManPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -300,3 +301,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7362a487a009c9a44b64c436b333c6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2448075002290200160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281976761629004548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67c7280deca689d48a239381b7bcc594, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  moveSpeed: 5
