@@ -3,29 +3,25 @@ using UnityEngine.UI;
 
 public class RolledNumberScript : MonoBehaviour
 {
-    DiceRollScript diceRollScript;
-    [SerializeField]
-    Text rolledNumberText;
-
+    DiceRollScript dice;
+    [SerializeField] Text rolledNumberText;
 
     void Awake()
     {
-        diceRollScript = FindFirstObjectByType<DiceRollScript>();
+        dice = FindFirstObjectByType<DiceRollScript>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (diceRollScript != null)
+        if (dice == null)
         {
-            if (diceRollScript.isLanded)
-                rolledNumberText.text = diceRollScript.diceFaceNum;
-
-            else
-                rolledNumberText.text = "?";
-
+            rolledNumberText.text = "?";
+            return;
         }
+
+        if (dice.isLanded)
+            rolledNumberText.text = dice.LastValue.ToString();
         else
-            Debug.LogWarning("DiceRollScript not found!");
+            rolledNumberText.text = "?";
     }
 }
