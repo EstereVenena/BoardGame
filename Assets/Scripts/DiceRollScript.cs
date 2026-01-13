@@ -6,77 +6,121 @@ public class DiceRollScript : MonoBehaviour
 {
     public event Action<int> OnDiceLanded;
 
-    Rigidbody rBody;
-    Vector3 startPosition;
+    [Header("Roll Settings")]
+    [SerializeField] float upwardImpulseMin = 2.0f;
+    [SerializeField] float upwardImpulseMax = 4.0f;
+    [SerializeField] float sideImpulseMax = 0.6f;
+    [SerializeField] float torqueImpulseMax = 6.0f;
 
-    [Header("Roll Force")]
-    [SerializeField] float maxRandForcVal = 25f;
-    [SerializeField] float startRollingForce = 1000f;
+    [Header("Reset / Spawn")]
+    [SerializeField] float liftOnReset = 0.15f; // lift slightly above ground to avoid overlap pop
+    [SerializeField] bool freezeWhileIdle = true;
 
     [Header("Landing Detection")]
-    [SerializeField] float settleVelocity = 0.08f;   // smaller = stricter
-    [SerializeField] float settleAngular = 0.08f;    // smaller = stricter
-    [SerializeField] float settleTime = 1.0f;        // seconds under threshold
+    [SerializeField] float settleLinear = 0.08f;
+    [SerializeField] float settleAngular = 0.08f;
+    [SerializeField] float settleTime = 1.0f;
 
-    float settleTimer = 0f;
+    Rigidbody rb;
+    Vector3 startPos;
+    Quaternion startRot;
 
-    public int LastValue { get; private set; } = 0;
-    public bool isLanded = false;
-    public bool firstThrow = false;
+    float settleTimer;
+    bool sentResult;
+
+    public int LastValue { get; private set; }
+    public bool isLanded { get; private set; }
+    public bool firstThrow { get; private set; }
+
+    public bool IsLocked { get; private set; }
 
     DiceBottomDetector bottomDetector;
 
     void Awake()
     {
-        startPosition = transform.position;
-        rBody = GetComponent<Rigidbody>();
-        bottomDetector = GetComponent<DiceBottomDetector>(); // needs this component on same Dice object
+        rb = GetComponent<Rigidbody>();
+        bottomDetector = GetComponent<DiceBottomDetector>();
+
+        startPos = transform.position;
+        startRot = transform.rotation;
+
         ResetDice();
     }
 
-    void Initialize()
+    public void SetLocked(bool locked) => IsLocked = locked;
+
+    public void ResetDice()
     {
-        rBody.isKinematic = true;
-        transform.rotation = UnityEngine.Random.rotation;
+        // Make dynamic so we can safely zero velocities without warnings
+        rb.isKinematic = false;
+
+        // Move slightly above the surface to avoid collision “explosion”
+        transform.position = startPos + Vector3.up * liftOnReset;
+        transform.rotation = startRot;
+
+        // Clear motion
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        // Idle state
+        firstThrow = false;
+        isLanded = true;          // treat reset as "ready"
+        settleTimer = 0f;
+        sentResult = false;
+        LastValue = 0;
+
+        if (freezeWhileIdle)
+            rb.isKinematic = true;
     }
 
     void RollDice()
     {
+        // Prepare roll
         isLanded = false;
         settleTimer = 0f;
+        sentResult = false;
 
-        rBody.isKinematic = false;
+        // Ensure dynamic
+        rb.isKinematic = false;
 
-        float forceX = UnityEngine.Random.Range(0, maxRandForcVal);
-        float forceY = UnityEngine.Random.Range(0, maxRandForcVal);
-        float forceZ = UnityEngine.Random.Range(0, maxRandForcVal);
+        // Clear motion so impulse is consistent
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
-        rBody.AddForce(Vector3.up * UnityEngine.Random.Range(800f, startRollingForce));
-        rBody.AddTorque(forceX, forceY, forceZ, ForceMode.Impulse);
-    }
+        // Randomize orientation so it doesn't favor one side
+        transform.rotation = UnityEngine.Random.rotation;
 
-    public void ResetDice()
-    {
-        transform.position = startPosition;
+        // Add impulses (NOT insane values)
+        float up = UnityEngine.Random.Range(upwardImpulseMin, upwardImpulseMax);
+        Vector3 side = new Vector3(
+            UnityEngine.Random.Range(-sideImpulseMax, sideImpulseMax),
+            0f,
+            UnityEngine.Random.Range(-sideImpulseMax, sideImpulseMax)
+        );
 
-        firstThrow = false;
-        isLanded = false;
-        settleTimer = 0f;
-        LastValue = 0;
+        rb.AddForce((Vector3.up * up) + side, ForceMode.Impulse);
 
-        Initialize();
+        Vector3 torque = new Vector3(
+            UnityEngine.Random.Range(-torqueImpulseMax, torqueImpulseMax),
+            UnityEngine.Random.Range(-torqueImpulseMax, torqueImpulseMax),
+            UnityEngine.Random.Range(-torqueImpulseMax, torqueImpulseMax)
+        );
+
+        rb.AddTorque(torque, ForceMode.Impulse);
     }
 
     void Update()
     {
-        // Click dice to roll
-        if ((Input.GetMouseButtonDown(0) && isLanded) ||
-            (Input.GetMouseButtonDown(0) && !firstThrow))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        if (IsLocked) return;
 
-            if (Physics.Raycast(ray, out hit))
+        // Click dice to roll
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Only allow roll if landed/ready OR first throw
+            if (!isLanded && firstThrow) return;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 if (hit.collider != null && hit.collider.gameObject == gameObject)
                 {
@@ -86,29 +130,33 @@ public class DiceRollScript : MonoBehaviour
             }
         }
 
-        // Landing check
-        if (!rBody.isKinematic && !isLanded)
+        // Landing check (only while moving)
+        if (!rb.isKinematic && !isLanded)
         {
             bool slow =
-                rBody.linearVelocity.magnitude < settleVelocity &&
-                rBody.angularVelocity.magnitude < settleAngular;
+                rb.linearVelocity.magnitude < settleLinear &&
+                rb.angularVelocity.magnitude < settleAngular;
 
-            if (slow) settleTimer += Time.deltaTime;
-            else settleTimer = 0f;
+            settleTimer = slow ? (settleTimer + Time.deltaTime) : 0f;
 
             if (settleTimer >= settleTime)
             {
                 isLanded = true;
-                rBody.isKinematic = true;
 
-                // Read bottom value from triggers, convert to top.
-                int top = 0;
-                if (bottomDetector != null)
-                    top = bottomDetector.GetTopValue();
+                if (freezeWhileIdle)
+                    rb.isKinematic = true;
 
-                // Fallback if detector not ready
-                LastValue = (top >= 1 && top <= 6) ? top : UnityEngine.Random.Range(1, 7);
+                if (sentResult) return;
+                sentResult = true;
 
+                int top = (bottomDetector != null) ? bottomDetector.GetTopValue() : 0;
+                if (top < 1 || top > 6)
+                {
+                    Debug.LogError("DiceRollScript: failed to detect top face. Check DiceBottomDetector faces.");
+                    return;
+                }
+
+                LastValue = top;
                 OnDiceLanded?.Invoke(LastValue);
             }
         }

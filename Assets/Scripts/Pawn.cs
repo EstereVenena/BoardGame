@@ -10,14 +10,27 @@ public class Pawn : MonoBehaviour
     public float stepTime = 0.18f;
     public float heightOffset = 0.15f;
 
-    [Header("Animation")]
+    /* ===============================
+     * ANIMATION (DISABLED FOR NOW)
+     * ===============================
+     * To enable later:
+     * 1. Uncomment Animator field
+     * 2. Uncomment SetRun(...) calls
+     * 3. Assign Animator in prefab
+     */
+
+    /*
+    [Header("Animation (optional)")]
     public Animator animator;
     public string idleParam = "Idle";
     public string runParam = "Run";
+    */
 
     void Awake()
     {
-        if (animator == null) animator = GetComponentInChildren<Animator>();
+        // If you want auto-detection later:
+        // if (animator == null)
+        //     animator = GetComponentInChildren<Animator>();
     }
 
     public void PlaceOnTile(BoardPath board, int index)
@@ -31,18 +44,22 @@ public class Pawn : MonoBehaviour
         if (IsMoving) yield break;
         IsMoving = true;
 
-        SetRun(true);
+        // SetRun(true); // 🔓 enable later
 
         for (int i = 0; i < steps; i++)
         {
-            if (TileIndex >= board.LastIndex) break;
-            TileIndex++;
+            if (TileIndex >= board.LastIndex)
+                break;
 
-            Vector3 target = board.tiles[TileIndex].position + Vector3.up * heightOffset;
+            TileIndex++;
+            Vector3 target =
+                board.tiles[TileIndex].position +
+                Vector3.up * heightOffset;
+
             yield return MoveTo(target, stepTime);
         }
 
-        SetRun(false);
+        // SetRun(false); // 🔓 enable later
         IsMoving = false;
     }
 
@@ -50,15 +67,18 @@ public class Pawn : MonoBehaviour
     {
         Vector3 start = transform.position;
         float t = 0f;
+
         while (t < 1f)
         {
             t += Time.deltaTime / Mathf.Max(0.0001f, time);
             transform.position = Vector3.Lerp(start, target, t);
             yield return null;
         }
+
         transform.position = target;
     }
 
+    /*
     void SetRun(bool running)
     {
         if (animator == null) return;
@@ -69,4 +89,5 @@ public class Pawn : MonoBehaviour
         if (!string.IsNullOrEmpty(idleParam))
             animator.SetBool(idleParam, !running);
     }
+    */
 }

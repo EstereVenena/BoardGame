@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 1985963837951980560}
   - component: {fileID: 293435824139131425}
   - component: {fileID: 2970985205552511182}
+  - component: {fileID: -5479303397806957017}
   m_Layer: 0
   m_Name: GolemPlayer
   m_TagString: Player
@@ -204,7 +205,7 @@ Transform:
   m_GameObject: {fileID: 5281976761629004548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -300,3 +301,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7362a487a009c9a44b64c436b333c6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-5479303397806957017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281976761629004548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a871bb3695c6a541a76925123e6339f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stepTime: 0.18
+  heightOffset: 1
