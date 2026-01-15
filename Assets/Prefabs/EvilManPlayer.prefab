@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 1985963837951980560}
   - component: {fileID: 293435824139131425}
   - component: {fileID: 8422188085876573537}
+  - component: {fileID: 3159435675257420923}
   m_Layer: 0
   m_Name: EvilManPlayer
   m_TagString: Player
@@ -204,7 +205,7 @@ Transform:
   m_GameObject: {fileID: 5281976761629004548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.374, y: -0.08, z: -0.4}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -300,5 +301,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a871bb3695c6a541a76925123e6339f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepTime: 0.18
+  stepTime: 0.5
   heightOffset: 1
+  tileOffset: {x: 0.5, y: 0, z: -0.5}
+--- !u!114 &3159435675257420923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5281976761629004548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1918127526fcf754fbf9abf5088d22d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 0}
+  pawnOffset: {x: 0, y: 0, z: 0}
+  keepZFixed: 1
+  fixedZ: 0
+  currentTileIndex: 0
+  loopAtEnd: 1

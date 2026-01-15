@@ -45,18 +45,24 @@ public class ChooseCharacterScript : MonoBehaviour
     }
 
     public void Play()
+{
+    characterName = inputField.GetComponent<TMPro.TMP_InputField>().text;
+
+    if (characterName.Length >= 3)
     {
-        characterName = inputField.GetComponent<TMPro.TMP_InputField>().text;
+        PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
+        PlayerPrefs.SetString("PlayerName", characterName);
+        PlayerPrefs.SetInt("PlayerCount", playerCount);
 
-        if (characterName.Length >= 3)
-        {
-            PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
-            PlayerPrefs.SetString("PlayerName", characterName);
-            PlayerPrefs.SetInt("PlayerCount", playerCount);
-            StartCoroutine(sceneChanger.Delay("play", characterIndex, characterName));
+        // Build player list now so game scene has correct names
+        if (GameSession.I != null)
+            GameSession.I.BuildPlayersFromPrefs();
 
-        }
-        else
-            inputField.GetComponent<TMPro.TMP_InputField>().Select();
+        StartCoroutine(sceneChanger.Delay("play", characterIndex, characterName));
     }
+    else
+    {
+        inputField.GetComponent<TMPro.TMP_InputField>().Select();
+    }
+}
 }

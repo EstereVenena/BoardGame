@@ -10,33 +10,16 @@ public class Pawn : MonoBehaviour
     public float stepTime = 0.18f;
     public float heightOffset = 0.15f;
 
-    /* ===============================
-     * ANIMATION (DISABLED FOR NOW)
-     * ===============================
-     * To enable later:
-     * 1. Uncomment Animator field
-     * 2. Uncomment SetRun(...) calls
-     * 3. Assign Animator in prefab
-     */
+    [Header("Placement Offset (fix pivot / lane)")]
+    public Vector3 tileOffset = Vector3.zero; // set per pawn instance by TurnGameManager
 
-    /*
-    [Header("Animation (optional)")]
-    public Animator animator;
-    public string idleParam = "Idle";
-    public string runParam = "Run";
-    */
-
-    void Awake()
-    {
-        // If you want auto-detection later:
-        // if (animator == null)
-        //     animator = GetComponentInChildren<Animator>();
-    }
+    public void SetTileOffset(Vector3 offset) => tileOffset = offset;
 
     public void PlaceOnTile(BoardPath board, int index)
     {
         TileIndex = Mathf.Clamp(index, 0, board.LastIndex);
-        transform.position = board.tiles[TileIndex].position + Vector3.up * heightOffset;
+        Vector3 basePos = board.tiles[TileIndex].position;
+        transform.position = basePos + tileOffset + Vector3.up * heightOffset;
     }
 
     public IEnumerator MoveSteps(BoardPath board, int steps)
@@ -44,22 +27,16 @@ public class Pawn : MonoBehaviour
         if (IsMoving) yield break;
         IsMoving = true;
 
-        // SetRun(true); // 🔓 enable later
-
         for (int i = 0; i < steps; i++)
         {
             if (TileIndex >= board.LastIndex)
                 break;
 
             TileIndex++;
-            Vector3 target =
-                board.tiles[TileIndex].position +
-                Vector3.up * heightOffset;
-
+            Vector3 target = board.tiles[TileIndex].position + tileOffset + Vector3.up * heightOffset;
             yield return MoveTo(target, stepTime);
         }
 
-        // SetRun(false); // 🔓 enable later
         IsMoving = false;
     }
 
@@ -77,17 +54,4 @@ public class Pawn : MonoBehaviour
 
         transform.position = target;
     }
-
-    /*
-    void SetRun(bool running)
-    {
-        if (animator == null) return;
-
-        if (!string.IsNullOrEmpty(runParam))
-            animator.SetBool(runParam, running);
-
-        if (!string.IsNullOrEmpty(idleParam))
-            animator.SetBool(idleParam, !running);
-    }
-    */
 }

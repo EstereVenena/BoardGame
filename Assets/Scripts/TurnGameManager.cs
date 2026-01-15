@@ -8,33 +8,38 @@ public class TurnGameManager : MonoBehaviour
     public DiceRollScript dice;
     public BoardPath board;
 
-    [Header("Players (assign pawn prefabs OR existing pawns)")]
+    [Header("Spawning")]
     public Transform spawnPoint;
-    public GameObject[] pawnPrefabs;         // optional: spawn from prefabs
-    public List<Pawn> pawns = new List<Pawn>(); // if you already have pawns in scene, drag them here
+    public GameObject[] pawnPrefabs;   // character prefabs (must have Pawn + NameScript, or they'll be added)
 
-    [Header("Game Rules")]
+    [Header("UI")]
+    public WinScreenUI winUI;
+
+    [Header("Rules")]
     public bool extraTurnOnSix = true;
 
+    // runtime
+    readonly List<Pawn> pawns = new List<Pawn>();
     int currentPlayer = 0;
     bool isMoving = false;
+    bool gameEnded = false;
 
     void Start()
     {
         if (dice == null) dice = FindFirstObjectByType<DiceRollScript>();
         if (board == null) board = FindFirstObjectByType<BoardPath>();
 
-        // Spawn pawns if none provided
-        if (pawns.Count == 0 && pawnPrefabs != null && pawnPrefabs.Length > 0)
-            SpawnPawns();
+        if (GameSession.I == null)
+            Debug.LogError("GameSession not found! Add GameSession object in Start Menu scene (DontDestroyOnLoad).");
 
-        // Place all pawns at Tile0
-        foreach (var p in pawns)
-            p.PlaceOnTile(board, 0);
+        // Build players if not built (failsafe)
+        if (GameSession.I != null && GameSession.I.players.Count == 0)
+            GameSession.I.BuildPlayersFromPrefs();
 
-        // Subscribe to dice result
+        SpawnAllPlayers();
+        PlaceAllAtStart();
+
         dice.OnDiceLanded += OnDiceLanded;
-
         BeginTurn();
     }
 
@@ -42,46 +47,106 @@ public class TurnGameManager : MonoBehaviour
     {
         if (dice != null) dice.OnDiceLanded -= OnDiceLanded;
     }
+void SpawnPawns(int count)
+{
+    pawns.Clear();
 
-    void SpawnPawns()
+    for (int i = 0; i < count; i++)
     {
+        var prefab = pawnPrefabs[i % pawnPrefabs.Length];
+        var go = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
+
+        var pawn = go.GetComponent<Pawn>();
+        if (pawn == null) pawn = go.AddComponent<Pawn>();
+
+        // ✅ lane offset: centered around 0, no drift
+        Vector3 laneOffset = new Vector3((i - (count - 1) / 2f) * 0.22f, 0f, 0f);
+        pawn.SetTileOffset(laneOffset);
+
+        pawns.Add(pawn);
+    }
+}
+
+    void SpawnAllPlayers()
+    {
+        pawns.Clear();
+
+        int count = (GameSession.I != null) ? GameSession.I.PlayerCount : Mathf.Clamp(PlayerPrefs.GetInt("PlayerCount", 2), 2, 7);
         Vector3 basePos = spawnPoint != null ? spawnPoint.position : Vector3.zero;
 
-        for (int i = 0; i < pawnPrefabs.Length; i++)
+        for (int i = 0; i < count; i++)
         {
-            var go = Instantiate(pawnPrefabs[i], basePos + new Vector3(i * 0.25f, 0, i * 0.1f), Quaternion.identity);
+            // Pick prefab based on player character index
+            int prefabIndex = 0;
+            string pname = $"Player{i + 1}";
+
+            if (GameSession.I != null)
+            {
+                prefabIndex = Mathf.Abs(GameSession.I.players[i].characterIndex) % pawnPrefabs.Length;
+                pname = GameSession.I.players[i].name;
+            }
+
+            var prefab = pawnPrefabs[prefabIndex];
+            var pos = basePos + new Vector3(i * 0.25f, 0f, i * 0.12f);
+
+            GameObject go = Instantiate(prefab, pos, Quaternion.identity);
+
             var pawn = go.GetComponent<Pawn>();
             if (pawn == null) pawn = go.AddComponent<Pawn>();
+
+            var ns = go.GetComponent<NameScript>();
+            if (ns == null) ns = go.AddComponent<NameScript>();
+            ns.SetName(pname);
+
             pawns.Add(pawn);
         }
     }
 
+    void PlaceAllAtStart()
+    {
+        foreach (var p in pawns)
+            p.PlaceOnTile(board, 0);
+    }
+
     void BeginTurn()
     {
-        Debug.Log($"TURN: Player {currentPlayer + 1} roll!");
-        dice.SetLocked(false); // allow rolling
+        if (gameEnded) return;
+
+        dice.SetLocked(false);
+        Debug.Log($"TURN: {GetPlayerName(currentPlayer)} roll!");
     }
 
     void OnDiceLanded(int value)
     {
-        if (isMoving) return; // safety
+        if (gameEnded) return;
+        if (isMoving) return;
+
         StartCoroutine(DoMove(value));
     }
 
     IEnumerator DoMove(int steps)
     {
         isMoving = true;
-
-        // lock dice so player can't spam roll while moving
         dice.SetLocked(true);
 
         Pawn pawn = pawns[currentPlayer];
         yield return pawn.MoveSteps(board, steps);
 
-        // Win condition: reached last tile
+        // Win condition
         if (pawn.TileIndex >= board.LastIndex)
         {
-            Debug.Log($"🏆 WINNER: Player {currentPlayer + 1}!");
+            gameEnded = true;
+
+            string winnerName = GetPlayerName(currentPlayer);
+
+            // Save win
+            LeaderboardStore.AddWin(winnerName);
+
+            Debug.Log($"🏆 WINNER: {winnerName}");
+
+            if (winUI != null)
+                winUI.ShowWinner(winnerName);
+
             yield break;
         }
 
@@ -98,5 +163,13 @@ public class TurnGameManager : MonoBehaviour
 
         isMoving = false;
         BeginTurn();
+    }
+
+    string GetPlayerName(int index)
+    {
+        if (GameSession.I != null && index >= 0 && index < GameSession.I.players.Count)
+            return GameSession.I.players[index].name;
+
+        return $"Player {index + 1}";
     }
 }

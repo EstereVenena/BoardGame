@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4418162965866473457}
   - component: {fileID: 1212591089756634148}
   - component: {fileID: 385897908422202855}
+  - component: {fileID: -7059433419702451626}
   m_Layer: 0
   m_Name: FallingAngel1Player
   m_TagString: Player
@@ -125,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7362a487a009c9a44b64c436b333c6d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameText: {fileID: 0}
 --- !u!114 &385897908422202855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,8 +139,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a871bb3695c6a541a76925123e6339f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepTime: 0.18
+  stepTime: 0.5
   heightOffset: 1
+  tileOffset: {x: 0.5, y: 0, z: -0.5}
+--- !u!114 &-7059433419702451626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999138035121371659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1918127526fcf754fbf9abf5088d22d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  board: {fileID: 0}
+  pawnOffset: {x: 0.2, y: 0.2, z: 0}
+  keepZFixed: 1
+  fixedZ: 0
+  currentTileIndex: 0
+  loopAtEnd: 1
 --- !u!1 &6120251926107036592
 GameObject:
   m_ObjectHideFlags: 0
