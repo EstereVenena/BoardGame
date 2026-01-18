@@ -19,7 +19,7 @@ From the **Main Menu**, you can:
 
 ## ⚙️ Settings
 
-![Settings Screen](./screenshots/2.png)
+![Main Menu](./screenshots/1.png)
 
 Available options:
 
@@ -34,7 +34,7 @@ Changes apply immediately and affect gameplay visuals and audio.
 
 ## 👤 Player Setup
 
-![Player Setup](./screenshots/3.png)
+![Player Setup](./screenshots/2.png)
 
 Before starting the game:
 
@@ -47,7 +47,7 @@ Your chosen name appears above your character during gameplay.
 
 ## 🎲 Gameplay
 
-![Gameplay Board](./screenshots/4.png)
+![Gameplay Board](./screenshots/3.png)
 
 - Players take turns **rolling the dice**
 - Each roll moves the character forward on the board
@@ -60,7 +60,7 @@ This is a **turn-based game** — no timers, no rush, just dice and destiny.
 
 ## ⏸️ Pause Menu
 
-![Pause Screen](./screenshots/5.png)
+![Pause Screen](./screenshots/4.png)
 
 🔑 **The pause screen opens when `ESC` is pressed**
 
@@ -76,7 +76,7 @@ The game is fully paused while this menu is open.
 
 ## 🏆 Win Screen
 
-![Win Screen](./screenshots/6.png)
+![Win Screen](./screenshots/5.png)
 
 When a player reaches the final tile:
 
