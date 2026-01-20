@@ -777,7 +777,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &99260745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1931,7 +1931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &506791547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1990,7 +1990,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 1
-  m_AdditionalShaderChannelsFlag: 7
+  m_AdditionalShaderChannelsFlag: 31
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -3946,7 +3946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1579373971580037531, guid: df1205f4427c9a846adf9de5d46d3fe1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2177317119859350094, guid: df1205f4427c9a846adf9de5d46d3fe1, type: 3}
       propertyPath: m_VertexColorAlwaysGammaSpace
@@ -5569,15 +5569,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8992048931936743435, guid: 0520e268e72d34844b52ad3a8b2473ff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.26
+      value: 2.52
       objectReference: {fileID: 0}
     - target: {fileID: 8992048931936743435, guid: 0520e268e72d34844b52ad3a8b2473ff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.911
+      value: 2.17
       objectReference: {fileID: 0}
     - target: {fileID: 8992048931936743435, guid: 0520e268e72d34844b52ad3a8b2473ff, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.43
+      value: -2.47
       objectReference: {fileID: 0}
     - target: {fileID: 8992048931936743435, guid: 0520e268e72d34844b52ad3a8b2473ff, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7795,13 +7795,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749980899}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38157833, y: 0.0009779822, z: -0.0004238267, w: 0.92433596}
-  m_LocalPosition: {x: 0.5, y: 6.5, z: -7.52}
+  m_LocalRotation: {x: 0.37913993, y: -0.0029127023, z: -0.0010911993, w: 0.92533416}
+  m_LocalPosition: {x: 0.41, y: 6.14, z: -6.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 44.863, y: 0.12, z: -0.003}
+  m_LocalEulerAnglesHint: {x: 44.56, y: -0.5, z: -0.34}
 --- !u!1 &1763756910
 GameObject:
   m_ObjectHideFlags: 0
@@ -8794,7 +8794,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 305054899948646526, guid: 589d1f3d24a0d8146bfad61e56afdcbe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4002582215635056891, guid: 589d1f3d24a0d8146bfad61e56afdcbe, type: 3}
       propertyPath: m_Pivot.x
