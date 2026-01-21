@@ -27,7 +27,6 @@ public class SimpleSettingsScript : MonoBehaviour
         allResolutions = Screen.resolutions;
         uniqueResolutions.Clear();
 
-        // Build unique list by width/height only
         HashSet<string> seen = new HashSet<string>();
         foreach (var r in allResolutions)
         {
@@ -60,22 +59,20 @@ public class SimpleSettingsScript : MonoBehaviour
 
         bool fullscreen = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
 
-        // Set UI values without triggering callbacks
+        // Set UI without triggering callbacks
         musicSlider.SetValueWithoutNotify(musicVol);
         sfxSlider.SetValueWithoutNotify(sfxVol);
         resolutionDropdown.SetValueWithoutNotify(savedResIndex);
         fullscreenToggle.SetIsOnWithoutNotify(fullscreen);
-
         resolutionDropdown.RefreshShownValue();
 
-        // ---- Apply once ----
         ApplyAudio(musicVol, sfxVol);
         ApplyDisplay(savedResIndex, fullscreen);
 
         isInitializing = false;
     }
 
-    // Hook these from UI events (Inspector)
+    // Hook these from UI events
     public void OnMusicSlider(float v)
     {
         if (isInitializing) return;
@@ -122,19 +119,25 @@ public class SimpleSettingsScript : MonoBehaviour
 
     private void ApplyDisplay(int resIndex, bool fullscreen)
     {
-        resIndex = Mathf.Clamp(resIndex, 0, uniqueResolutions.Count - 1);
+        if (uniqueResolutions.Count == 0) return;
 
+        resIndex = Mathf.Clamp(resIndex, 0, uniqueResolutions.Count - 1);
         var r = uniqueResolutions[resIndex];
 
-        // Fullscreen behavior that actually toggles back on reliably
-        Screen.fullScreenMode = fullscreen
-            ? FullScreenMode.FullScreenWindow    // or ExclusiveFullScreen if you prefer
-            : FullScreenMode.Windowed;
+        // 1) set fullscreen mode first
+        Screen.fullScreenMode = fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
 
-        Screen.SetResolution(r.width, r.height, Screen.fullScreenMode);
+        // 2) then set resolution with explicit fullscreen bool
+        Screen.SetResolution(r.width, r.height, fullscreen);
 
+        // save
         PlayerPrefs.SetInt("ResIndex", resIndex);
         PlayerPrefs.SetInt("Fullscreen", fullscreen ? 1 : 0);
+
+        // also save boot res so build starts consistent (optional but recommended)
+        PlayerPrefs.SetInt("BootW", r.width);
+        PlayerPrefs.SetInt("BootH", r.height);
+
         PlayerPrefs.Save();
     }
 }

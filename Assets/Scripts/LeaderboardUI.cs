@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class LeaderboardUI : MonoBehaviour
 {
-    [Header("Assign in Inspector")]
+    [Header("Assign in Inspector (optional)")]
     public TMP_Text listText;
+
+    void Awake()
+    {
+        if (listText == null)
+            listText = GetComponentInChildren<TMP_Text>(true);
+    }
 
     void OnEnable()
     {
@@ -14,7 +20,11 @@ public class LeaderboardUI : MonoBehaviour
 
     public void Refresh()
     {
-        if (listText == null) return;
+        if (listText == null)
+        {
+            Debug.LogError("LeaderboardUI: listText is not assigned and could not be found.");
+            return;
+        }
 
         var sorted = LeaderboardStore.GetSorted();
         var sb = new StringBuilder();
@@ -24,7 +34,7 @@ public class LeaderboardUI : MonoBehaviour
             string medal =
                 i == 0 ? "🥇" :
                 i == 1 ? "🥈" :
-                i == 2 ? "🥉" : "  ";
+                i == 2 ? "🥉" : "•";
 
             sb.AppendLine($"{medal}  {sorted[i].name} — {sorted[i].wins}");
         }
