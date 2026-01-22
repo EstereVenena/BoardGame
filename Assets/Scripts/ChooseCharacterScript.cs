@@ -1,68 +1,115 @@
 using UnityEngine;
+using TMPro;
 
 public class ChooseCharacterScript : MonoBehaviour
 {
+    [Header("Character Selection")]
     public GameObject[] characters;
-    int characterIndex;
+    private int characterIndex;
 
-    public GameObject inputField;
-    string characterName;
+    [Header("UI")]
+    public TMP_InputField inputField;
+
+    [Header("Players")]
     public int playerCount = 2;
+
+    [Header("Scene")]
     public SceneChanger sceneChanger;
 
     private void Awake()
     {
         characterIndex = 0;
-        foreach (GameObject character in characters)
+
+        // Hide all, then show first
+        if (characters != null)
         {
-            character.SetActive(false);
+            foreach (GameObject character in characters)
+            {
+                if (character != null)
+                    character.SetActive(false);
+            }
+
+            ShowCharacter(characterIndex);
+        }
+    }
+
+    private void ShowCharacter(int index)
+    {
+        if (characters == null || characters.Length == 0) return;
+
+        index = Mathf.Clamp(index, 0, characters.Length - 1);
+
+        // Disable all (safe even if already disabled)
+        for (int i = 0; i < characters.Length; i++)
+        {
+            if (characters[i] != null)
+                characters[i].SetActive(false);
         }
 
-        characters[characterIndex].SetActive(true);
+        // Enable selected
+        var go = characters[index];
+        if (go == null) return;
+
+        go.SetActive(true);
+
+        // ✅ Randomize idle animation for the newly shown avatar
+        var picker = go.GetComponent<RandomIdlePicker>();
+        if (picker != null)
+            picker.PickRandomIdle();
     }
 
     public void NextCharacter()
     {
-        characters[characterIndex].SetActive(false);
-        characterIndex++;
+        if (characters == null || characters.Length == 0) return;
 
-        if (characterIndex == characters.Length)
-        {
+        characterIndex++;
+        if (characterIndex >= characters.Length)
             characterIndex = 0;
-        }
-        characters[characterIndex].SetActive(true);
+
+        ShowCharacter(characterIndex);
     }
 
     public void PreviousCharacter()
     {
-        characters[characterIndex].SetActive(false);
+        if (characters == null || characters.Length == 0) return;
+
         characterIndex--;
-        if (characterIndex == -1)
-        {
+        if (characterIndex < 0)
             characterIndex = characters.Length - 1;
-        }
-        characters[characterIndex].SetActive(true);
+
+        ShowCharacter(characterIndex);
     }
 
     public void Play()
-{
-    characterName = inputField.GetComponent<TMPro.TMP_InputField>().text;
-
-    if (characterName.Length >= 3)
     {
-        PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
-        PlayerPrefs.SetString("PlayerName", characterName);
-        PlayerPrefs.SetInt("PlayerCount", playerCount);
+        if (inputField == null)
+        {
+            Debug.LogError("[ChooseCharacterScript] InputField is not assigned.");
+            return;
+        }
 
-        // Build player list now so game scene has correct names
-        if (GameSession.I != null)
-            GameSession.I.BuildPlayersFromPrefs();
+        string characterName = inputField.text?.Trim() ?? "";
 
-        StartCoroutine(sceneChanger.Delay("play", characterIndex, characterName));
+        if (characterName.Length >= 3)
+        {
+            PlayerPrefs.SetInt("SelectedCharacter", characterIndex);
+            PlayerPrefs.SetString("PlayerName", characterName);
+            PlayerPrefs.SetInt("PlayerCount", playerCount);
+            PlayerPrefs.Save();
+
+            // Build player list now so game scene has correct names
+            if (GameSession.I != null)
+                GameSession.I.BuildPlayersFromPrefs();
+
+            if (sceneChanger != null)
+                StartCoroutine(sceneChanger.Delay("play", characterIndex, characterName));
+            else
+                Debug.LogError("[ChooseCharacterScript] SceneChanger is not assigned.");
+        }
+        else
+        {
+            inputField.Select();
+            inputField.ActivateInputField();
+        }
     }
-    else
-    {
-        inputField.GetComponent<TMPro.TMP_InputField>().Select();
-    }
-}
 }

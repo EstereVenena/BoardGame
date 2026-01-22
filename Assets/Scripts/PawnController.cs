@@ -6,21 +6,24 @@ public class PawnController : MonoBehaviour
     public BoardManager board;
 
     [Header("Pawn Positioning")]
-    public Vector3 pawnOffset = new Vector3(0.2f, 0.2f, 0f);
-    public bool keepZFixed = true;
-    public float fixedZ = 0f;
+    public Vector3 pawnOffset = new Vector3(0.2f, 0f, 0f);
+
+    [Tooltip("Keeps pawn at a fixed height above the tile surface")]
+    public bool keepYFixed = true;
+
+    [Tooltip("Extra height added on top of the tile SnapPoint Y")]
+    public float yOffset = 0.1f;
 
     [Header("Current Tile")]
     public int currentTileIndex = 0;
 
     [Header("Board Behavior")]
-    public bool loopAtEnd = true; // true = wrap around, false = clamp at last tile
+    public bool loopAtEnd = true;
 
     private void Awake()
     {
-        // If not assigned in Inspector, auto-find one in the scene.
         if (board == null)
-            board = FindAnyObjectByType<BoardManager>(); // NEW API (replaces FindObjectOfType)
+            board = FindAnyObjectByType<BoardManager>();
 
         if (board == null)
             Debug.LogError("[PawnController] No BoardManager found in scene.");
@@ -46,10 +49,11 @@ public class PawnController : MonoBehaviour
             return;
         }
 
+        // IMPORTANT: do NOT overwrite Z (board is on X/Z plane)
         Vector3 target = tile.SnapPoint + pawnOffset;
 
-        if (keepZFixed)
-            target.z = fixedZ;
+        if (keepYFixed)
+            target.y = tile.SnapPoint.y + yOffset;  // keep pawn above tile surface
 
         transform.position = target;
     }
