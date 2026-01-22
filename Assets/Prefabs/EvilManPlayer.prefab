@@ -276,7 +276,7 @@ Animator:
   m_GameObject: {fileID: 5281976761629004548}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c2f3fa146ec3bfe448be72295a3235a5, type: 2}
+  m_Controller: {fileID: 9100000, guid: d256a1d016d4a1842be1f63cd40ed374, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -302,4 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stepTime: 0.5
   heightOffset: 1
+  useUnscaledTime: 0
   tileOffset: {x: 0, y: 0, z: -0.48}
+  snapAfterStep: 1
+  snapAtEnd: 1
